@@ -1,0 +1,26 @@
+#include "mbed.h"
+AnalogIn IRSensor(p15);
+Serial pc(USBTX, USBRX); // tx, rx
+ DigitalOut led1(LED1);
+ 
+int main() {
+    int x = 0;
+    while(1) {
+       wait(1);
+       float a = IRSensor;
+       pc.printf("IR sensor reads %2.2f\n ", a);
+       a=1-a;
+       float distance  = a*26+4; // converting distance
+       distance = (int)distance;
+       if(distance <=30){
+            pc.printf("\rDistance is %2.2f cm \n ", distance); 
+      }
+      if(x!=distance){
+          led1 = 1;
+          x = distance;
+          }
+          else{
+              led1 = 0;
+              }
+    }
+}
